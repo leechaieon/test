@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    .box{border:1px solid black; margin-bottom:20px; padding:10px 15px; width:85%}
+    #pickPhone,#pickMail{width:45%}
+    #cerNum{border:1px solid red}
+    .all{margin-left:10px; margin-top:10%}
+    #close{margin-left:30%; margin-top:10%}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="http://img.hackershrd.com/common/favicon.ico" />
+
+<!-- xhtml property속성 벨리데이션 오류/확인필요 -->
+<meta property="og:title" content="해커스 HRD" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://www.hackershrd.com/" />
+<meta property="og:image" content="http://img.hackershrd.com/common/og_logo.png" />
+
+<link type="text/css" rel="stylesheet" href="http://q.hackershrd.com/worksheet/css/common.css" />
+<link type="text/css" rel="stylesheet" href="http://q.hackershrd.com/worksheet/css/bxslider.css" />
+<link type="text/css" rel="stylesheet" href="http://q.hackershrd.com/worksheet/css/main.css" /><!-- main페이지에만 호출 -->
+<link type="text/css" rel="stylesheet" href="http://q.hackershrd.com/worksheet/css/sub.css" /><!-- sub페이지에만 호출 -->
+<link type="text/css" rel="stylesheet" href="http://q.hackershrd.com/worksheet/css/login.css" /><!-- login페이지에만 호출 -->
+
+<script type="text/javascript" src="http://q.hackershrd.com/worksheet/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="http://q.hackershrd.com/worksheet/js/plugins/bxslider/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="http://q.hackershrd.com/worksheet/js/plugins/bxslider/bxslider.js"></script>
+<script type="text/javascript" src="http://q.hackershrd.com/worksheet/js/ui.js"></script>
+<!--[if lte IE 9]> <script src="/js/common/place_holder.js"></script> <![endif]-->
+
+</head>
+<body>
+<div class="all">
+    <button class="btn-s-line" id="pickPhone"  onclick="pickPhone()">전화번호 인증</button>
+    <button class="btn-s-line" id="pickMail"  onclick="pickMail()">이메일 인증</button>
+    <div id="phone" class="box">
+            <form method="post" action="" >
+             <input type="text" class="input-text" style="width:100px" id="userId1" name="userId1" placeholder="아이디"/><br /><br />
+             <input type="text" class="input-text" style="width:50px" id="num1" name="num1" placeholder="010" list="phoneNum"/>
+             <datalist id="phoneNum">
+                <option value="010"></option>
+                <option value="016"></option>
+                <option value="011"></option>
+             </datalist>
+             - 
+             <input type="text" class="input-text" style="width:50px" id="num2"  name="num2"/> - 
+             <input type="text" class="input-text" style="width:50px" id="num3"  name="num3"/>
+             <input type="hidden" value="phone" id="what1" name="what">
+             <br /><br />
+             <input type="text" class="input-text" style="width:100px" id="userName1" name="userName1" placeholder="이름"/>		
+            <input type="button" class="btn-s-line" onclick="sendMsg1()" id="btn1" value="인증번호 전송" >
+             <div id="msg1"></div>
+            <div id="box2">
+             <input type="text" name="cerNum" id="cerNumPhone" placeholder="인증번호"/>
+             <input type="submit" id="sendPwd1" value="확인" onclick="javascript:form.action='randomPw.php';">
+            </div>
+            </form>
+            </div>         
+            <div id="email" class="box">
+            <form method="post" action="" name="memReg">
+             <input type="text" class="input-text" style="width:100px" id="userId2" name="userId2" placeholder="아이디"/>
+             <br /><br />
+             <input type="text" class="input-text" style="width:80px" id="mailAddress" name="mailAddress" placeholder="이메일"/>
+             @ 
+             <!-- <input type="text" class="input-text" style="width:138px" name="emailSite" id="emailSite"  />
+				<SELECT name="SelEmailDomain1" onchange="changeSelect(this,1);">
+				<option value="naver.com">naver.com</option>
+				<option value='hackers.com'>hackers.com</option>
+				<option value='hanmail.net'>hanmail.net</option>
+				<option value="user">직접입력</option>
+   				</SELECT> -->
+                   <input type="text" class="input-text" style="width:138px" value="" name="emailSite" id="emailSite"  />
+                   <SELECT name="SelEmailDomain1" onchange="changeSelect(this);">
+                   <option value="">메일주소선택</option>
+                   <option value="naver.com">naver.com</option>
+                   <option value='hackers.com'>hackers.com</option>
+                   <option value='hanmail.net'>hanmail.net</option>
+                   <option value="user">직접입력</option>
+                       </SELECT>      
+						
+             <input type="hidden" value="mail" id="what2" name="what">
+             <br /><br />
+             <input type="text" class="input-text" style="width:100px" id="userName2" name="userName2" placeholder="이름"/>		
+             <input type="button" class="btn-s-line" onclick="sendMsg2()" id="btn2" value="인증번호 전송">
+             <div id="msg2"></div>
+             <div id="box3">
+                     <input type="text" name="cerNum" id="cerNumMail" placeholder="인증번호"/>
+
+                     <input type="submit" id="sendPwd2" value="확인" onclick="javascript:form.action='randomPw.php';">
+            </div>
+            </form>
+        </div>  
+<button onClick='self.close()' class='btn-s-line' id="close">닫기</button>
+</div>  
+<script type="text/javascript" src="jquery-3.6.0.min.js"></script>    
+<script>
+//     function selectBox(){
+//         let emailSite= $('#emailSelect option:selected').val();
+//         if (emailSite!='직접입력'){
+//         $('input[name=userMail2]').attr('value',emailSite);	
+//         $('input[name=userMail2]').val()=emailSite;
+//         $('input[name=userMail2]').attr('readonly','readonly');}
+//         else if(emailSite=='직접입력'){
+//             $('input[name=userMail2]').removeAttr('readonly');
+//         }
+//         $(function(){ 
+	
+//           $("input").keyup(function(){ 
+// 	    let emailSite= $('#emailSelect option:selected').val();
+     
+          
+//         $("#userMail2").attr("value", emailSite);
+// 	  })})
+// }
+function changeSelect(s){
+    form = document.memReg;
+    sel = s[s.selectedIndex].value;
+    dis = 1;
+ 
+    if(sel=="user"){
+        sel = "";
+        dis = 0;
+    }
+        form.emailSite.value = sel;
+        form.emailSite.disabled = dis;
+   
+}
+
+
+    document.getElementById("email").style.display="none";
+    function pickMail(){      
+        document.getElementById("phone").style.display="none";
+        document.getElementById("email").style.display="block";   
+        
+    }
+    function pickPhone(){      
+        document.getElementById("email").style.display="none";
+        document.getElementById("phone").style.display="block";   
+        
+    }
+
+    //인증번호창 숨김
+    document.getElementById("box2").style.display='none';
+    document.getElementById("box3").style.display='none';
+
+    function sendMsg1(){  //button id 값을 설정하고 누르면 클릭이벤트 발생
+    let phone = document.getElementById("num1").value+document.getElementById("num2").value+document.getElementById("num3").value;      //변수로 input name값을 정해준다
+    let name = document.getElementById("userName1").value; 
+    let what = document.getElementById("what1").value; 
+    let userId = document.getElementById("userId1").value;
+    $.ajax({
+        type :"POST",                //post타입으로 데이터 보냄
+        url : "searchPwPhone.php",      //값을 전달할 url
+        async : true,                //동기식or비동기식으로 바꿀수 있다고 하는데 뭔지 잘모르겠다
+        dataType : 'html',          //<p id="result"></p> 여기에 값을 받기 위해 type을 html로 지정
+        data : {phone, name,what, userId},                  //변수 설정해놓은 data 값 사용
+        success : function(data){    //데이터값이 제대로 전달 됐으면 result에 출력 해준다
+            $('#msg1').html(data);
+            if(data=="인증번호를 보냈습니다. 입력하세요."){
+            $('#box2').show();
+            $('#btn2').attr('disabled','disabled');}
+            console.log(data);
+        }
+    });
+  
+};
+  
+ 
+    function sendMsg2(){   //button id 값을 설정하고 누르면 클릭이벤트 발생
+   let email = document.getElementById("mailAddress").value;
+   let emailSite = document.getElementById("emailSite").value; 
+   
+  
+   let userId = document.getElementById("userId2").value;
+   //변수로 input name값을 정해준다
+   let name = document.getElementById("userName2").value;  
+   let what = document.getElementById("what2").value; 
+    $.ajax({
+        type :"POST",                //post타입으로 데이터 보냄
+        url : "searchPwPhone.php",      //값을 전달할 url
+        async : true,                //동기식or비동기식으로 바꿀수 있다고 하는데 뭔지 잘모르겠다
+        dataType : 'html',          //<p id="result"></p> 여기에 값을 받기 위해 type을 html로 지정
+        data : {email:email,emailSite:emailSite,name:name,what:what,userId:userId},                  //변수 설정해놓은 data 값 사용
+        success : function(data){    //데이터값이 제대로 전달 됐으면 result에 출력 해준다
+            $('#msg2').html(data);
+            if(data=="인증번호를 보냈습니다. 입력하세요."){
+            $('#box3').show();
+            $('#btn1').attr('disabled','disabled');}
+            console.log(data);
+        }
+    });
+}
+
+
+
+</script>
+</body>
+</html>
